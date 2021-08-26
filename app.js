@@ -123,7 +123,7 @@ function closeModal() {
   overlay.removeEventListener('click', closeModal);
   window.removeEventListener('keydown', handlePressEsc);
   window.removeEventListener('keydown', handlePressArrowRight);
-  window.removeListener('keydown', handlePressArrowLeft);
+  window.removeEventListener('keydown', handlePressArrowLeft);
 }
 
 function handlePressEsc(e) {

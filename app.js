@@ -69,11 +69,13 @@ const imgGallery = createGalleryItem(galleryItems);
 const modal = document.querySelector('.js-lightbox');
 const imgModal = document.querySelector('.lightbox__image');
 const closeModalBtn = document.querySelector('button[data-action="close-lightbox"]');
+const overlay = document.querySelector('div.lightbox__overlay');
+
 
 imgContainer.insertAdjacentHTML('beforeend', imgGallery);
 
 imgContainer.addEventListener('click', onImgContainerClick);
-closeModalBtn.addEventListener('click', closeModal);
+
 
 function createGalleryItem(items) {
   return items
@@ -103,13 +105,28 @@ function onImgContainerClick(e) {
     if (e.target === e.currentTarget) {
         return;
     }
+  
   imgModal.src = e.target.dataset.source;
   imgModal.alt = e.target.getAttribute('alt');
   modal.classList.add('is-open');
+  closeModalBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', closeModal);
+  window.addEventListener('keydown', handlePressEsc);  
 }
 
 function closeModal() {
   imgModal.src = '';
   imgModal.alt = '';
-  modal.classList.remove('is-open');   
+  modal.classList.remove('is-open');
+  closeModalBtn.removeEventListener('click', closeModal);
+  overlay.removeEventListener('click', closeModal);
+  window.removeEventListener('keydown', handlePressEsc);
 }
+
+function handlePressEsc(e) {
+    if (e.code !== 'Escape') {
+        return;
+    }
+    closeModal();
+}
+

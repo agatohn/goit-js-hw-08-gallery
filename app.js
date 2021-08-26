@@ -79,14 +79,14 @@ imgContainer.addEventListener('click', onImgContainerClick);
 
 function createGalleryItem(items) {
   return items
-    .map(({preview, original, description}) => {
+    .map(({ preview, original, description }) => {
       return `
-   <li class="gallery__item">
+   <li  class="gallery__item">
   <a
     class="gallery__link"
     href="${original}"
   >
-    <img
+    <img      
       class="gallery__image"
       src="${preview}"
       data-source="${original}"
@@ -105,13 +105,14 @@ function onImgContainerClick(e) {
     if (e.target === e.currentTarget) {
         return;
     }
-  
   imgModal.src = e.target.dataset.source;
   imgModal.alt = e.target.getAttribute('alt');
   modal.classList.add('is-open');
   closeModalBtn.addEventListener('click', closeModal);
   overlay.addEventListener('click', closeModal);
-  window.addEventListener('keydown', handlePressEsc);  
+  window.addEventListener('keydown', handlePressEsc);
+  window.addEventListener('keydown', handlePressArrowRight);
+  window.addEventListener('keydown', handlePressArrowLeft);
 }
 
 function closeModal() {
@@ -121,6 +122,8 @@ function closeModal() {
   closeModalBtn.removeEventListener('click', closeModal);
   overlay.removeEventListener('click', closeModal);
   window.removeEventListener('keydown', handlePressEsc);
+  window.removeEventListener('keydown', handlePressArrowRight);
+  window.removeListener('keydown', handlePressArrowLeft);
 }
 
 function handlePressEsc(e) {
@@ -130,3 +133,40 @@ function handlePressEsc(e) {
     closeModal();
 }
 
+function handlePressArrowRight(e) {
+  e.preventDefault();
+    if (e.code !== 'ArrowRight') {
+        return;
+    }
+  const newImg = document.querySelector(`[data-source="${imgModal.src}"]`);
+  console.log(newImg)
+  const sibling = newImg.closest('li').nextElementSibling;
+  console.log(sibling)
+  if (sibling === null) {
+     return;
+  }
+  const nextImg = sibling.querySelector('img');
+  console.log(nextImg)
+  imgModal.src = nextImg.dataset.source;
+  imgModal.alt = nextImg.getAttribute('alt');
+  
+}
+
+function handlePressArrowLeft(e) {
+  e.preventDefault();
+    if (e.code !== 'ArrowLeft') {
+        return;
+    }
+  const newImg = document.querySelector(`[data-source="${imgModal.src}"]`);
+  console.log(newImg)
+  const sibling = newImg.closest('li').previousElementSibling;
+  console.log(sibling)
+  if (sibling === null) {
+     return;
+  }
+  const nextImg = sibling.querySelector('img');
+  console.log(nextImg)
+  imgModal.src = nextImg.dataset.source;
+  imgModal.alt = nextImg.getAttribute('alt');
+  
+}

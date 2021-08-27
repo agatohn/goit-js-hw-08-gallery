@@ -104,9 +104,8 @@ function onImgContainerClick(e) {
   e.preventDefault();
     if (e.target === e.currentTarget) {
         return;
-    }
-  imgModal.src = e.target.dataset.source;
-  imgModal.alt = e.target.getAttribute('alt');
+    }   
+  updateModalParameters(e.target.dataset.source, e.target.getAttribute);
   modal.classList.add('is-open');
   closeModalBtn.addEventListener('click', closeModal);
   overlay.addEventListener('click', closeModal);
@@ -116,8 +115,7 @@ function onImgContainerClick(e) {
 }
 
 function closeModal() {
-  imgModal.src = '';
-  imgModal.alt = '';
+  updateModalParameters("", "");
   modal.classList.remove('is-open');
   closeModalBtn.removeEventListener('click', closeModal);
   overlay.removeEventListener('click', closeModal);
@@ -138,17 +136,16 @@ function handlePressArrowRight(e) {
     if (e.code !== 'ArrowRight') {
         return;
     }
-  const newImg = document.querySelector(`[data-source="${imgModal.src}"]`);
-  console.log(newImg)
-  const sibling = newImg.closest('li').nextElementSibling;
-  console.log(sibling)
+  const currentImg = document.querySelector(`[data-source="${imgModal.src}"]`);
+  
+  const sibling = currentImg.closest('li').nextElementSibling;
+  
   if (sibling === null) {
      return;
   }
   const nextImg = sibling.querySelector('img');
-  console.log(nextImg)
-  imgModal.src = nextImg.dataset.source;
-  imgModal.alt = nextImg.getAttribute('alt');
+  
+  updateModalParameters(nextImg.dataset.source, nextImg.getAttribute('alt'));
   
 }
 
@@ -157,16 +154,20 @@ function handlePressArrowLeft(e) {
     if (e.code !== 'ArrowLeft') {
         return;
     }
-  const newImg = document.querySelector(`[data-source="${imgModal.src}"]`);
-  console.log(newImg)
-  const sibling = newImg.closest('li').previousElementSibling;
-  console.log(sibling)
+  const currentImg = document.querySelector(`[data-source="${imgModal.src}"]`);
+ 
+  const sibling = currentImg.closest('li').previousElementSibling;
+  
   if (sibling === null) {
      return;
   }
   const nextImg = sibling.querySelector('img');
-  console.log(nextImg)
-  imgModal.src = nextImg.dataset.source;
-  imgModal.alt = nextImg.getAttribute('alt');
+
+  updateModalParameters(nextImg.dataset.source, nextImg.getAttribute('alt'));
   
+}
+
+function updateModalParameters(src, alt) {
+  imgModal.src = src;
+  imgModal.alt = alt;
 }
